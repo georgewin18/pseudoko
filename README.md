@@ -1,16 +1,23 @@
-# experiment_app
+# pseuDoKo
 
-experiment for mobile-database integration
+skeleton app for DoKo
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+clone this repository
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+git clone https://github.com/georgewin18/pseudoko.git
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+get dependencies
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+```
+
+copy .env.example and fill in the values
+
+```bash
+cp .env.example .env
+```
