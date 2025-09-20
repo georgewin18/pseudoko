@@ -19,6 +19,9 @@ import 'package:experiment_app/features/member/data/repositories/member_reposito
 import 'package:experiment_app/features/member/data/repositories/member_repository_impl.dart';
 import 'package:experiment_app/features/member/data/models/group_member_model.dart';
 
+import 'package:experiment_app/features/profile/data/repositories/profile_repository.dart';
+import 'package:experiment_app/features/profile/data/repositories/profile_repository_impl.dart';
+
 final getIt = GetIt.instance;
 
 void setupLocator() {
@@ -48,6 +51,12 @@ void setupLocator() {
       supabase: getIt<SupabaseClient>(),
       memberBox: getIt<Box<GroupMember>>(),
     ),
+  );
+
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      supabase: getIt<SupabaseClient>(),
+    )
   );
 
   getIt.registerLazySingleton<AuthNotifier>(
