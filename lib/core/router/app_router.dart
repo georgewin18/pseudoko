@@ -3,8 +3,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:experiment_app/features/auth/presentation/manager/auth_notifier.dart';
 import 'package:experiment_app/features/auth/presentation/pages/splash_page.dart';
-import 'package:experiment_app/features/auth/presentation/pages/login_page.dart';
-import 'package:experiment_app/features/auth/presentation/pages/register_page.dart';
+import 'package:experiment_app/features/auth/presentation/pages/signin_page.dart';
+import 'package:experiment_app/features/auth/presentation/pages/signup_page.dart';
 
 import 'package:experiment_app/features/invitation/presentation/pages/invitation_page.dart';
 
@@ -12,7 +12,12 @@ import 'package:experiment_app/features/task/presentation/pages/home_page.dart';
 import 'package:experiment_app/features/task/presentation/pages/my_task_page.dart';
 import 'package:experiment_app/features/task/presentation/pages/task_detail_page.dart';
 
+import 'package:experiment_app/features/profile/presentation/pages/profile_page.dart';
+import 'package:experiment_app/features/profile/presentation/pages/edit_profile_page.dart';
+import 'package:experiment_app/features/profile/presentation/pages/change_password_page.dart';
+
 import 'package:experiment_app/injection.dart';
+import 'package:experiment_app/core/router/shell_page.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -24,8 +29,8 @@ final GoRouter router = GoRouter(
     final isLoggedIn = session != null;
 
     final onAuthRoute =
-      state.matchedLocation == '/login' ||
-      state.matchedLocation == '/register';
+      state.matchedLocation == '/sign-in' ||
+      state.matchedLocation == '/sign-up';
 
     if (isLoggedIn && onAuthRoute) {
       return '/home';
@@ -33,9 +38,9 @@ final GoRouter router = GoRouter(
 
     if (!isLoggedIn && !onAuthRoute) {
       if (state.matchedLocation == '/') {
-        return '/login';
+        return '/sign-in';
       }
-      return '/login';
+      return '/sign-in';
     }
 
     if (isLoggedIn && state.matchedLocation == '/') {
@@ -52,36 +57,59 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(
-      path: '/login',
-      builder: (context, state) => const LoginPage(),
+      path: '/sign-in',
+      builder: (context, state) => const SignInPage(),
     ),
 
     GoRoute(
-      path: '/register',
-      builder: (context, state) => const RegisterPage(),
+      path: '/sign-up',
+      builder: (context, state) => const SignUpPage(),
     ),
 
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomePage(),
+    ShellRoute(
+      builder: (context, state, child) {
+        return ShellPage(child: child);
+      },
       routes: [
         GoRoute(
-          path: 'group/:groupId',
-          builder: (context, state) {
-            final groupId = int.parse(state.pathParameters['groupId']!);
-            final extra = state.extra as Map<String, dynamic>;
-            return TaskDetailPage(
-              taskGroupId: groupId,
-              groupName: extra['groupName'],
-              ownerId: extra['ownerId'],
-            );
-          }
+          path: '/home',
+          builder: (context, state) => const HomePage(),
+        ),
+
+        GoRoute(
+          path: '/my-tasks',
+          builder: (context, state) => const MyTasksPage(),
+        ),
+
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) => const ProfilePage(),
+          routes: [
+            GoRoute(
+              path: 'edit-profile',
+              builder: (context, state) => const EditProfilePage(),
+            ),
+
+            GoRoute(
+              path: 'change-password',
+              builder: (context, state) => const ChangePasswordPage(),
+            )
+          ]
         ),
       ],
     ),
+
     GoRoute(
-      path: '/my-tasks',
-      builder: (context, state) => const MyTasksPage(),
+      path: '/group/:groupId',
+      builder: (context, state) {
+        final groupId = int.parse(state.pathParameters['groupId']!);
+        final extra = state.extra as Map<String, dynamic>;
+        return TaskDetailPage(
+          taskGroupId: groupId,
+          groupName: extra['groupName'],
+          ownerId: extra['ownerId'],
+        );
+      }
     ),
 
     GoRoute(
