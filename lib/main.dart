@@ -24,6 +24,8 @@ import 'package:experiment_app/features/member/data/repositories/member_reposito
 import 'package:experiment_app/features/member/presentation/manager/member_notifier.dart';
 import 'package:experiment_app/features/member/data/models/group_member_model.dart';
 
+import 'package:experiment_app/features/profile/data/repositories/profile_repository.dart';
+import 'package:experiment_app/features/profile/presentation/manager/profile_notifier.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,11 +83,15 @@ class MyApp extends StatelessWidget {
 
         ChangeNotifierProvider(
           create: (_) => MemberNotifier(getIt<MemberRepository>()),
+        ),
+
+        ChangeNotifierProvider(
+          create: (_) => ProfileNotifier(getIt<ProfileRepository>()),
         )
       ],
       child: MaterialApp.router(
         title: 'pseuDoKo',
-        theme: ThemeData.dark(),
+        theme: ThemeData(),
         routerConfig: router,
       ),
     );
