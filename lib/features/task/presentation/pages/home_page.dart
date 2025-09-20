@@ -2,9 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:experiment_app/injection.dart';
 import 'package:experiment_app/features/task/data/models/task_group_model.dart';
 import 'package:experiment_app/features/task/presentation/manager/task_group_notifier.dart';
 
@@ -151,28 +149,12 @@ class _HomePageState extends State<HomePage> {
         title: Text(isOnline ? 'Task Groups' : 'Task Groups (Offline)'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.list_alt),
-            tooltip: 'My Tasks',
-            onPressed: () {
-              context.push('/my-tasks');
-            },
-          ),
-          IconButton(
             icon: const Icon(Icons.notifications),
             tooltip: 'Invitations',
             onPressed: () {
               context.push('/invitations');
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await getIt<SupabaseClient>().auth.signOut();
-              if (context.mounted) {
-                context.go('/login');
-              }
-            },
-          )
         ],
       ),
       body: Consumer<TaskGroupNotifier>(
@@ -201,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                   subtitle: Text(group.description ?? '', maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () {
                     context.push(
-                      '/home/group/${group.id}',
+                      '/group/${group.id}',
                       extra: {
                         'groupName': group.name,
                         'ownerId': group.ownerId!
