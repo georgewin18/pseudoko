@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:experiment_app/features/task/data/repositories/task_repository.dart';
@@ -40,12 +41,29 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<void> createTask(int groupId, String name, {String? description}) async {
+  Future<void> createTask(int groupId, String name, {
+    String? description,
+    String? attachment,
+    DateTime? deadline,
+    String? repeatInterval,
+  }) async {
     try {
+      String? dateString;
+      String? timeString;
+
+      if (deadline != null) {
+        dateString = DateFormat('yyyy-MM-dd').format(deadline);
+        timeString = DateFormat('HH:mm:ss').format(deadline);
+      }
+
       await supabase.rpc('create_new_task', params: {
-        'group_id': groupId,
-        'task_name': name,
-        'task_description': description,
+        'p_group_id': groupId,
+        'p_name': name,
+        'p_description': description,
+        'p_attachment': attachment,
+        'p_date': dateString,
+        'p_time': timeString,
+        'p_repeat_interval': repeatInterval,
       });
     } catch (e) {
       throw Exception('Failed to create task: $e');
