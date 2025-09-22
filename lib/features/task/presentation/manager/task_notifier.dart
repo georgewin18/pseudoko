@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:experiment_app/core/utils/notifier_state.dart';
 import 'package:experiment_app/features/task/data/models/task_model.dart';
 import 'package:experiment_app/features/task/data/repositories/task_repository.dart';
-
 import 'package:experiment_app/features/task/data/models/user_task_model.dart';
-
-enum NotifierState { initial, loading, loaded, error }
 
 class TaskNotifier extends ChangeNotifier {
   final TaskRepository _repository;
@@ -65,9 +63,20 @@ class TaskNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addTask(int groupId, String name, {String? description}) async {
+  Future<void> addTask(int groupId, String name, {
+    String? description,
+    String? attachment,
+    DateTime? deadline,
+    String? repeatInterval,
+  }) async {
     try {
-      await _repository.createTask(groupId, name, description: description);
+      await _repository.createTask(
+        groupId, name,
+        description: description,
+        attachment: attachment,
+        deadline: deadline,
+        repeatInterval: repeatInterval,
+      );
       await fetchTasks(groupId);
     } catch (e) {
       debugPrint('Error adding task: $e');
