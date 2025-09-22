@@ -1,9 +1,8 @@
+import 'package:experiment_app/core/utils/notifier_state.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:experiment_app/features/member/data/repositories/member_repository.dart';
 import 'package:experiment_app/features/member/data/models/group_member_model.dart';
-
-enum NotifierState { initial, loading, loaded, error }
 
 class MemberNotifier extends ChangeNotifier {
   final MemberRepository _repository;
