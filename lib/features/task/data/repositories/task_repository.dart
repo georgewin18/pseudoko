@@ -5,7 +5,12 @@ import 'package:experiment_app/features/task/data/models/user_task_model.dart';
 
 abstract class TaskRepository {
   Future<List<Task>> getTasksForGroup(int groupId);
-  Future<void> createTask(int groupId, String name, {String? description});
+  Future<void> createTask(int groupId, String name, {
+    String? description,
+    String? attachment,
+    DateTime? deadline,
+    String? repeatInterval,
+  });
 
   Future<void> updateTask({
     required int taskId,
