@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import 'package:experiment_app/core/utils/notifier_state.dart';
 import 'package:experiment_app/features/task/data/models/task_group_model.dart';
 import 'package:experiment_app/features/task/presentation/manager/task_group_notifier.dart';
 
@@ -13,10 +14,11 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<TaskGroupNotifier>().fetchTaskGroups();
     });
@@ -140,6 +142,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifeCycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      context.read<TaskGroupNotifier>().fetchTaskGroups();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final connectivityStatus = context.watch<ConnectivityResult>();
     final isOnline = connectivityStatus != ConnectivityResult.none;
@@ -186,7 +202,8 @@ class _HomePageState extends State<HomePage> {
                       '/group/${group.id}',
                       extra: {
                         'groupName': group.name,
-                        'ownerId': group.ownerId!
+                        'description': group.description ?? '',
+                        'ownerId': group.ownerId,
                       }
                     );
                   },
