@@ -1,3 +1,4 @@
+import 'package:experiment_app/features/home/presentation/pages/new_home_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -9,8 +10,8 @@ import 'package:experiment_app/features/auth/presentation/pages/signup_page.dart
 import 'package:experiment_app/features/invitation/presentation/pages/invitation_page.dart';
 
 import 'package:experiment_app/features/task/presentation/pages/home_page.dart';
-import 'package:experiment_app/features/task/presentation/pages/my_task_page.dart';
-import 'package:experiment_app/features/task/presentation/pages/task_detail_page.dart';
+import 'package:experiment_app/features/task/presentation/pages/detail_group_page.dart';
+import 'package:experiment_app/features/task/presentation/pages/add_task_page.dart';
 
 import 'package:experiment_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:experiment_app/features/profile/presentation/pages/edit_profile_page.dart';
@@ -78,7 +79,7 @@ final GoRouter router = GoRouter(
 
         GoRoute(
           path: '/my-tasks',
-          builder: (context, state) => const MyTasksPage(),
+          builder: (context, state) => const NewHomePage(),
         ),
 
         GoRoute(
@@ -104,12 +105,22 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final groupId = int.parse(state.pathParameters['groupId']!);
         final extra = state.extra as Map<String, dynamic>;
-        return TaskDetailPage(
+        return DetailGroupPage(
           taskGroupId: groupId,
-          groupName: extra['groupName'],
-          ownerId: extra['ownerId'],
+          groupName: extra['groupName'] as String,
+          description: extra['description'] as String,
+          ownerId: extra['ownerId'] as String,
         );
-      }
+      },
+      routes: [
+        GoRoute(
+          path: 'add-task',
+          builder: (context, state) {
+            final groupId = int.parse(state.pathParameters['groupId']!);
+            return AddTaskPage(taskGroupId: groupId);
+          }
+        )
+      ]
     ),
 
     GoRoute(
