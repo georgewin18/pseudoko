@@ -1,8 +1,8 @@
-import 'package:experiment_app/features/task/data/models/task_group_model.dart';
-import 'package:experiment_app/features/task/data/repositories/task_group_repository.dart';
 import 'package:flutter/foundation.dart';
 
-enum NotifierState { initial, loading, loaded, error }
+import 'package:experiment_app/core/utils/notifier_state.dart';
+import 'package:experiment_app/features/task/data/models/task_group_model.dart';
+import 'package:experiment_app/features/task/data/repositories/task_group_repository.dart';
 
 class TaskGroupNotifier extends ChangeNotifier {
   final TaskGroupRepository _repository;
