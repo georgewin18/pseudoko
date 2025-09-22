@@ -1,9 +1,8 @@
+import 'package:experiment_app/core/utils/notifier_state.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:experiment_app/features/invitation/data/repositories/invitation_repository.dart';
 import 'package:experiment_app/features/invitation/data/models/invitation_model.dart';
-
-enum NotifierState { initial, loading, loaded, error }
 
 class InvitationNotifier extends ChangeNotifier {
   final InvitationRepository _repository;
